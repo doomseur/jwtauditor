@@ -1,0 +1,11 @@
+From node:current-alpine3.22
+LABEL maintainer="JWTAuditor Team"
+LABEL description="JWT Auditor - Professional JWT security testing platform"
+
+RUN mkdir -p /var/www
+COPY . /var/www/
+
+WORKDIR /var/www
+
+EXPOSE 8000
+CMD ["npx",  "serve",  "."]

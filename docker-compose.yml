@@ -1,0 +1,68 @@
+services:
+  jwtauditor:
+    build: .
+    container_name: jwtauditor
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.jwtauditor.rule=Host(`jwtauditor.local`)"
+#      - "traefik.http.routers.jwtauditor.entrypoints=web"
+#      - "traefik.http.services.jwtauditor.loadbalancer.server.port=80"
+    networks:
+      - jwtauditor-network
+#    healthcheck:
+#      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
+#      start_period: 10s
+#
+  # Optional: Add a development environment with live reload
+#  jwtauditor-dev:
+#    image: node:18-alpine
+#    container_name: jwtauditor-dev
+#    working_dir: /app
+#    volumes:
+#      - .:/app
+#    ports:
+#      - "3992:3000"
+#    command: npx serve . -p 3000
+#    profiles:
+#      - development
+#    networks:
+#      - jwtauditor-network
+#    environment:
+#      - NODE_ENV=development
+
+  # Optional: Add a reverse proxy for production
+#  traefik:
+#    image: traefik:v3.0
+#    container_name: jwtauditor-traefik
+#    command:
+#      - "--api.insecure=true"
+#      - "--providers.docker=true"
+#      - "--providers.docker.exposedbydefault=false"
+#      - "--entrypoints.web.address=:80"
+#      - "--entrypoints.websecure.address=:443"
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#      - "8080:8080"  # Traefik dashboard
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    profiles:
+#      - production
+#    networks:
+#      - jwtauditor-network
+
+networks:
+  jwtauditor-network:
+    driver: bridge
+    name: jwtauditor-network
+
+volumes:
+  jwtauditor-data:
+    driver: local
+    name: jwtauditor-data
